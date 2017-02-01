@@ -1,0 +1,241 @@
+#include "C4Board.h"
+#include <iostream>
+
+using namespace std;
+
+// Constructor
+C4Board::C4Board()
+{
+	numCol = 7;
+	//Board = new C4Col[7];   
+		
+}
+
+
+ostream& operator<<(ostream &s, C4Board &Board)// Displays current board of the game
+{
+  // Print Column Numbers
+  for(int k = 0; k < Board.numCol; k++)
+    {
+      s << k + 1 << ' ' ;
+    }
+  // Add newline at the end of the line printing col numbers
+  cout << endl;
+  for(int i = Board.Board[0].getMaxDisc() - 1; i >= 0; i--)
+    {
+      for(int j = 0; j < Board.numCol; j++)
+		{
+	  	s << "|" << Board.Board[j].getDisc(i); // Print board and dividing character
+		}
+      s << "|" << endl; // Final separator for line and print newline
+    }
+   
+   return s;
+}
+
+void C4Board::play()
+{
+  int turn = 0, gameover = 0;
+  int col;
+
+	while(!gameover)
+	{      
+        // Prompt user for move
+       
+      	cout << (*this);
+			  if(turn % 2) // Different messages depending on the player nummber
+				{
+					cout << "It is player 2's turn" << endl;
+					cout << "Enter the Column in which you wish to insert a disc" << endl;
+					cout << "Enter -1 to end game" << endl;
+					cin >> col;
+					
+					// Manage Game
+					if(col > 0)
+					{
+						Board[col - 1] += 'O';
+					}
+					else // If they input a negative number the game ends
+					{
+						gameover = 1;
+					}
+					if(!gameover)
+					{
+						if(checkWin())
+						{
+							cout << (*this); // Display end of game
+							cout << "Congratulations! Player 2 won!" << endl; // If the game changes to win from a move from player 2, it means player 2 won.
+							gameover = 1;
+						}
+					}
+
+				}
+		 		else
+				{
+			    cout << "It is player 1's turn" << endl;
+			    cout << "Enter the Column in which you wish to insert a disc" << endl;
+			    cout << "Enter -1 to end game" << endl;
+			    cin >> col;
+
+					// Manage Game
+					if(col > 0)
+					{
+						Board[col - 1] += 'X';
+					}
+					else // If they input a negative number the game ends
+					{
+						gameover = 1;
+					}
+					if(!gameover)
+					{
+						if(checkWin())
+						{
+							display(); // Display end of game
+							cout << "Congratulations! Player 1 won!" << endl; // If the game changes to win from a move from player 2, it means player 2 won.
+							gameover = 1;
+						}
+					}
+				}
+	    
+      turn++;
+    }
+}
+
+/*C4Board::~C4Board()  //Destructor
+{
+	delete [] Board;
+}*/
+
+int C4Board::checkWin()
+{
+	if(checkRightDiag() || checkVert() || checkLeftDiag() || checkHor())
+	{
+		return 1;
+	}
+	
+	return 0; //If there is no win, return false
+}
+
+int C4Board::checkRightDiag()
+{
+	int col, row, testing;
+	int success;
+	char test;
+	
+	for(col = 0; col < (numCol - 3); col++)
+	{
+		for(row = 0; row < (Board[0].getMaxDisc() - 3); row ++) // Check up till the row three rows under the top
+		{
+			test = Board[col].getDisc(row); // Base char for compare
+			success = 1; // Assume success unless fail
+			testing = 0;
+			
+			while((testing < 4) && (success != 0) && (test != ' '))
+			{
+				if(test != Board[col + testing].getDisc(row + testing))
+				{
+					success = 0;
+				}
+				testing++;
+			}
+			if(success && (test != ' '))
+			{
+				return 1;
+			}
+		}
+	}
+	return 0; //If there is no success, return false value
+}
+
+int C4Board::checkLeftDiag()
+{
+	int col, row, testing;
+	int success;
+	char test;
+	
+	for(col = 3; col < numCol; col++)
+	{
+		for(row = 0; row < (Board[0].getMaxDisc() - 3); row ++) // Check up till the row three rows under the top
+		{
+			test = Board[col].getDisc(row); // Base char for compare
+			success = 1; // Assume success unless fail
+			testing = 0;
+			
+			while((testing < 4) && (success != 0) && (test != ' '))
+			{
+				if(test != Board[col - testing].getDisc(row + testing)) 
+				{
+					success = 0;
+				}
+				testing++;
+			}
+			if(success && (test != ' '))
+			{
+				return 1;
+			}
+		}
+	}
+	return 0; // If there is no success, return false value
+}
+
+int C4Board::checkVert()
+{
+	int col, row, testing;
+	int success;
+	char test;
+	
+	for(col = 0; col < numCol; col++)
+	{
+		for(row = 0; row < (Board[0].getMaxDisc() - 3); row ++) // Check up till the row three rows under the top
+		{
+			test = Board[col].getDisc(row); // Base char for compare
+			success = 1; // Assume success unless fail
+			testing = 0;
+			
+			while((testing < 4) && (success != 0) && (test != ' '))
+			{
+				if(test != Board[col].getDisc(row + testing))
+				{
+					success = 0;
+				}
+				testing++;
+			}
+			if(success && (test != ' '))
+			{
+				return 1;
+			}
+		}
+	}
+	return 0; // If there is no success, return false value
+}
+
+int C4Board::checkHor()
+{
+	int col, row, testing;
+	int success;
+	char test;
+	
+	for(col = 0; col < (numCol - 3); col++)
+	{
+		for(row = 0; row < (Board[0].getMaxDisc()); row ++) // Check up till the row three rows under the top
+		{
+			test = Board[col].getDisc(row); // Base char for compare
+			success = 1; // Assume success unless fail
+			testing = 0;
+			
+			while((testing < 4) && (success != 0) && (test != ' '))
+			{
+				if(test != Board[col + testing].getDisc(row))
+				{
+					success = 0;
+				}
+				testing++;
+			}
+			if(success && (test != ' '))
+			{
+				return 1;
+			}
+		}
+	}
+	return 0; // If there is no success, return false value
+}

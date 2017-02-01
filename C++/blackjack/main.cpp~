@@ -1,0 +1,39 @@
+#include "sudoku.h"
+#include <vector>
+#include <string>
+#include <cstdio>
+#include <ctype>
+
+
+int main(int argc, char* argv)
+{
+	FILE* puzzle_file;
+	puzzle_file = fopen(argv[1], "r");
+	char c;
+	
+	string type;
+	type.assign(argv[2]);
+	
+	
+	if(typ == char)
+	{
+		for(int row = 0; c != EOF, row++)
+		{
+			for(int col; !isspace(c); col++)
+			{
+				puzzle[row][col] = c;
+			}
+			if 
+		}
+	}
+	
+	if(type == "int")
+	{
+		puzzle<int>
+	}
+	else if(type == "char")
+	{
+		vector < vector <char> > puzzle;
+	}
+
+}

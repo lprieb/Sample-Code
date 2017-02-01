@@ -1,0 +1,59 @@
+How the user uses the blackjack program: The program is very straight
+forward. It tells you what do to at every step. In every move of the
+game the player can choose to hit or stand by pressing 's' or 'h'. As
+in the real blackjack game, the player is shown one of the dealer's
+cards. The player is also given the liberty to quit at any time pressing
+'q'. At the end of each game the player is prompted on whether he wishes
+to continue playing or not. The game determines the winner on its own
+and displays an appropriate message. It also keeps track of the number
+of wins by both the dealer and the player. Also note that in the game
+the Ace's value is 11 by default.
+
+How to program works internally deck_class: The deck class takes advantage
+of the functionally of  the deque class defined in the STL library. Since
+a deck is a deque, the implementation is done as an inheritance. The
+shuffle function shuffles the whole deck by calling the stl algorith
+random_shuffle(). The deal() function returns a card as an int value
+and pops the value from the deck. The deal function checks the number
+of cards in the deck, and if this falls under 15, 52 new cards going
+from 0 to 51 are added to the deck. The random_shuffle() function is
+called again to shuffle strictly the 52 new cards. Another important
+function is the addCard() function, which adds a card to the back of
+the deck. This is used in the game to add the cards to the player's
+deck and the dealer's deck. Next, the clean() function clears the deck
+and changes data members accordingly. Finally, the printRealCards()
+function mods each card value before printing to convert to cards in
+0-12 format. It also adds 1 to each value to transpose to 1-13 format.
+
+blackjack.cpp: The game uses three decks: one main deck from which all
+cards come from, and the player's and the dealer's decks. The first
+deck is initialized to 52.  The player's deck and dealer's deck start
+empty. When the game starts, each player is dealt two cards (the cards
+are dealt from the main deck and added to the player's and dealer's decks
+accordingly). The display_cards function() displays all of the cards in
+the player's deck and only one of the dealer's deck's cards. It makes use
+of the printRealCards() function. After the game displays the initial
+card the hit_or_stand() funciton is called. This functions reads the
+input from the user and checks that it's h, s, or q. It then returns 1
+when the player chooses to hit, or 0 otherwise. If the player chose to
+hit, a new card is dealt from the main deck and the player is prompted
+again. If the player chooses to hit, the round ends and the dealer is
+allowed to play through the function dealer_play(). In the function,
+the dealer will add cards to his deck until his cards add up to at least
+17 in value. This function makes use of the function sum_cards() which
+converts card values to its real value in the game (e.g. 13, king, has a
+value of 10 in the game). Next, the function decide_and_display_winner
+adds up the value of the cards of each deck and depending on the sum
+and following the regular rules of blackjack, determines the winner and
+displays a descriptive message. The player is then prompted on whether
+he wishes to continue by the function to_continue(). Again the input is
+checked and processed to end the loop if player chooses to quit. Back
+at hit_or_stand() if the player had pressed q, the game would first
+interpret it as a stand and finish the round, but won't prompt the user
+if he wishes to continue.
+
+
+Testing: The program was checked by playing the game thoroughly to
+check that all possible outcomes were displayed correctly in the right
+situation. Wrong input values were also tested to ensure that the program
+checks all inputs correctly.

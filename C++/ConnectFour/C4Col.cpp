@@ -1,0 +1,74 @@
+#include "C4Col.h"
+#include <iostream>
+
+using namespace std;
+
+int C4Col::isFull()
+{
+  if (discsInCol >= getMaxDisc())
+    {
+      return 1;
+    }
+  else
+    {
+      return 0;
+    }
+}
+
+// Constructor
+C4Col::C4Col()
+{
+  discsInCol = 0;
+  maxDiscs = 6;
+  //asciiDiscs = new char[getMaxDisc()];
+  
+  // Initialize Array of characters
+
+  for(int i = 0; i < getMaxDisc(); i++)
+    {
+      asciiDiscs[i] = ' ';
+    }
+} 
+
+char C4Col::getDisc(int row) // Function to Return ascii char of given disc
+{
+  
+  // If they try to get a disc in a row greater than seven, they will get an error message
+  if(row > getMaxDisc() - 1)
+    {
+      cout << "Invalid getDisc Input" << endl;
+    }
+  else
+    {
+      return asciiDiscs[row];
+    }
+}
+
+int C4Col::getMaxDisc() // Returns that value of maxDiscs
+{
+  return maxDiscs;
+}
+
+void C4Col::addDisc(char disc) // Adds char disc on top of the column
+{
+  if(isFull()) // Deny The adding of discs to a full column
+    {
+      cout << "The Column is full" << endl;
+    }
+  else
+    {
+      asciiDiscs[discsInCol] = disc;
+      discsInCol++;
+    }
+}
+
+C4Col C4Col::operator +=(char Disc)
+{
+	addDisc(Disc); // Used to determine if char was placed correctly
+	return *this;
+}
+
+/*C4Col::~C4Col() // Destructor
+{
+	//delete [] asciiDiscs; // Free memory
+}*/
